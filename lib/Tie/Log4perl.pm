@@ -28,6 +28,18 @@ sub PRINT {
     }
 }
 
+sub PRINTF {
+    my $self = shift;
+    unless ($self->{called}) {
+        local $self->{called} = 1;
+
+        my ($logger, $level, $prefix) = @{$self}{qw(logger level prefix)};
+        $Log::Log4perl::caller_depth++;
+        $logger->log($level, $prefix, sprintf(@_));
+        $Log::Log4perl::caller_depth--;
+    }
+}
+
 1;
 
 __END__
